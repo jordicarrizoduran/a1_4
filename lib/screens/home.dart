@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                       onPressed: () async {
-                        var postalCodes = await PostalService().fetchData();
-                        debugPrint(postalCodes.postCode);
+                        var postalCodes = await PostalService().fetchData(myController.value);
+                        debugPrint(postalCodes.countryAbbreviation);
                       },
                       child: const Text('Buscar')),
                   const SizedBox(height: 40),
