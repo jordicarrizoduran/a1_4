@@ -4,10 +4,10 @@ import '../models/postal_codes.dart';
 
 class PostalService {
   String codi = '';
-  String responseData ='';
-  String placeName='';
 
-  Future<CodiPostals> fetchData(newCodi) async {
+
+  Future<CodiPostals> fetchData(String newCodi) async {
+    updateCodi(newCodi);
     var response = await http.get(Uri.parse("https://api.zippopotam.us/es/ct/$codi"));
     final codiPostals = codiPostalsFromJson(response.body);
     return codiPostals;
