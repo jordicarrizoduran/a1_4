@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final myController = TextEditingController();
-  var postalCodes;
+  late CodiPostals postalCodes = CodiPostals(postCode: '', country: '', countryAbbreviation: '', places: []);
 
 
   @override
@@ -41,16 +41,29 @@ class _HomeState extends State<Home> {
                 ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                      onPressed: () async {
-                        postalCodes = await PostalService().fetchData(myController.text);
+                    onPressed: () async {
+                      try {
+                        // Fer la crida a fetchData
+                        CodiPostals result = await PostalService().fetchData(myController.text);
+
+                        // Actualitzar la UI o fer altres operacions amb postalCodes
+                        setState(() {
+                          postalCodes = result;
+                        });
+
                         debugPrint(postalCodes.postCode);
-                      },
-                      child: const Text('Buscar')
+                      } catch (e) {
+                        // Gestionar errors, com mostrar un missatge d'error
+                        debugPrint("Error: $e");
+                      }
+                    },
+                    child: const Text('Buscar'),
                   ),
                   const SizedBox(height: 40),
                   Row(
                     children: [
-                      Text(postalCodes.postCode)
+                      Text(postalCodes.postCode),
+                      Text(postalCodes.countryAbbreviation),
                     ],
                   ),
                 ],
