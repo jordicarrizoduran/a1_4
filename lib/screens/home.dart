@@ -12,8 +12,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final myController = TextEditingController();
-  late CodiPostals postalCodes = CodiPostals(postCode: '', country: '', countryAbbreviation: '', places: []);
-
+  late CodiPostals postalCodes = CodiPostals(
+      postCode: '', country: '', countryAbbreviation: '', places: []);
 
   @override
   void dispose(){
@@ -62,8 +62,13 @@ class _HomeState extends State<Home> {
                   const SizedBox(height: 40),
                   Row(
                     children: [
-                      Text(postalCodes.postCode),
-                      Text(postalCodes.countryAbbreviation),
+                      if (postalCodes != null && postalCodes.postCode != null)
+                        ...[
+                          Text(postalCodes.postCode),
+                          Text(postalCodes.countryAbbreviation ?? ''),
+                        ]
+                      else
+                        Text("Aquest codi postal no existeix"),
                     ],
                   ),
                 ],
