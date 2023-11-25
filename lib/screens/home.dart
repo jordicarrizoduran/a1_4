@@ -2,6 +2,7 @@ import 'package:a1_4/models/postal_codes.dart';
 import 'package:a1_4/services/postal_service.dart';
 import 'package:flutter/material.dart';
 
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -11,6 +12,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final myController = TextEditingController();
+  var postalCodes;
+
 
   @override
   void dispose(){
@@ -20,6 +23,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Codi Postals"),
@@ -38,12 +42,17 @@ class _HomeState extends State<Home> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                       onPressed: () async {
-                        var postalCodes = await PostalService().fetchData(myController.text);
-                        debugPrint(postalCodes.countryAbbreviation);
+                        postalCodes = await PostalService().fetchData(myController.text);
+                        debugPrint(postalCodes.postCode);
                       },
                       child: const Text('Buscar')
                   ),
                   const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      Text(postalCodes.postCode)
+                    ],
+                  ),
                 ],
               )
 
