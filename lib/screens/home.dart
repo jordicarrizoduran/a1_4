@@ -34,9 +34,11 @@ class _HomeState extends State<Home> {
             key: _formKey,
             child: Column(
               children: [
-                const Text('Escriu un codi postal i prem a "Buscar"'),
+                const SizedBox(height: 20),
+                const Text('Escriu un codi postal i prem a "Buscar"', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                 const SizedBox(height: 20),
                 TextFormField(
+                  textAlign: TextAlign.center,
                   controller: myController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -58,26 +60,29 @@ class _HomeState extends State<Home> {
                   },
                   child: const Text('Buscar'),
                 ),
+                const SizedBox(height: 40),
                 FutureBuilder(
                   future: _buttonPressed ? PostalService().fetchData(myController.text) : null,
                   builder: (context, snapshot) {
                     if (!_buttonPressed) {
                       return const SizedBox.shrink(); // No mostrar res fins que l'usuari premi el botó
-                    } else if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Text('Carregant');
                     } else if (snapshot.hasError) {
                       return const Text('Aquest codi postal no està registrat');
                     } else if (snapshot.hasData) {
                       var codiPostal = snapshot.data as CodiPostals;
 
                       return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const Text('Codi Postal:', style: TextStyle(fontWeight:FontWeight.bold),),
                           Text(codiPostal.postCode),
-                          Text(codiPostal.countryAbbreviation),
+                          const SizedBox(height: 20),
+                          const Text('Poblacions:', style: TextStyle(fontWeight:FontWeight.bold),),
+                          ...codiPostal.places.map((place) => Text(place.placeName)),
                         ],
                       );
                     } else {
-                      return const SizedBox.shrink();
+                      return const Text('Carregant');
                     }
                   },
                 ),
